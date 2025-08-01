@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Interview System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        
+        .status-panel {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .status-value {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-healthy {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .status-warning {
+            background: #faf089;
+            color: #744210;
+        }
+        
+        .status-error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #38a169 0%, #48bb78 100%);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            box-shadow: 0 8px 20px rgba(56, 161, 105, 0.3);
+        }
+        
+        .question-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .question-difficulty {
+            background: #ed8936;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            color: #2d3748;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        
+        .results-card {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border: 2px solid #68d391;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .final-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #38a169;
+            margin-bottom: 15px;
+        }
+        
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .score-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .feedback-card {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .feedback-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #38a169;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-text {
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .error {
+            background: #fed7d7;
+            border: 2px solid #fc8181;
+            border-radius: 8px;
+            padding: 15px;
+            color: #c53030;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+        
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .connection-test {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .test-result {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 6px;
+        }
+        
+        .test-success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .test-error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">📊 Excel Interview System</h1>
+            <p class="subtitle">Interactive Excel Skills Assessment Platform</p>
+        </div>
+        
+        <!-- Connection Test Section -->
+        <div class="connection-test">
+            <h3 style="margin-bottom: 15px; color: #2d3748;">🔗 Connection Test</h3>
+            <button class="btn btn-secondary" onclick="testConnection()">Test Server Connection</button>
+            <div id="connectionResults"></div>
+        </div>
+        
+        <!-- System Status Panel -->
+        <div class="status-panel" id="statusPanel">
+            <h3 style="margin-bottom: 15px; color: #2d3748;">🔍 System Status</h3>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="status-label">Server:</span>
+                    <span class="status-value" id="serverStatus">Checking...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Voice Service:</span>
+                    <span class="status-value" id="voiceStatus">Checking...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Questions:</span>
+                    <span class="status-value" id="questionsStatus">Checking...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Sessions:</span>
+                    <span class="status-value" id="sessionsStatus">Checking...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Start Interview Section -->
+        <div id="startSection" class="section">
+            <h2 style="margin-bottom: 20px; color: #2d3748;">🚀 Start Your Interview</h2>
+            <div class="form-group">
+                <label for="candidateName">Candidate Name:</label>
+                <input type="text" id="candidateName" placeholder="Enter your full name" value="John Doe">
+            </div>
+            <button class="btn" onclick="startInterview()" id="startBtn">
+                🚀 Begin Excel Assessment
+                <span id="startSpinner" class="spinner hidden"></span>
+            </button>
+            <button class="btn btn-secondary" onclick="testVoice()">🎙️ Test Voice System</button>
+        </div>
+        
+        <!-- Interview Section -->
+        <div id="interviewSection" class="section hidden">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText"></div>
+            </div>
+            
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number" id="questionNumber">Question 1</span>
+                    <span class="question-difficulty" id="questionDifficulty">Medium</span>
+                </div>
+                <div class="question-text" id="currentQuestion">Loading question...</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="responseText">Your Answer:</label>
+                <textarea id="responseText" placeholder="Provide a detailed explanation of your answer. Include specific steps, examples, and technical details to get the highest score."></textarea>
+            </div>
+            
+            <button class="btn" onclick="submitResponse()" id="submitBtn">
+                📝 Submit Answer
+                <span id="submitSpinner" class="spinner hidden"></span>
+            </button>
+            
+            <!-- Previous Feedback -->
+            <div id="feedbackCard" class="feedback-card hidden">
+                <div class="feedback-score" id="lastScore"></div>
+                <div class="feedback-text" id="lastFeedback"></div>
+            </div>
+        </div>
+        
+        <!-- Final Results Section -->
+        <div id="resultsSection" class="section hidden">
+            <div class="results-card">
+                <h2 style="color: #2d3748; margin-bottom: 20px;">🎉 Interview Complete!</h2>
+                <div class="final-score" id="finalScore">4.1/5.0</div>
+                
+                <div class="score-breakdown" id="scoreBreakdown">
+                    <!-- Scores will be populated here -->
+                </div>
+                
+                <div style="margin: 20px 0; color: #4a5568;">
+                    <strong>Duration:</strong> <span id="sessionDuration">6:23</span><br>
+                    <strong>Completion:</strong> <span id="completionRate">100%</span>
+                </div>
+                
+                <button class="btn" onclick="resetInterview()">🔄 Start New Interview</button>
+                <button class="btn btn-secondary" onclick="viewAllSessions()">📊 View All Sessions</button>
+            </div>
+        </div>
+        
+        <!-- Error Display -->
+        <div id="errorDisplay" class="error hidden"></div>
+        
+        <!-- Debug Information -->
+        <div id="debugSection" class="section">
+            <details>
+                <summary style="cursor: pointer; font-weight: 600; color: #4a5568; margin-bottom: 10px;">🔧 Debug Information</summary>
+                <div style="background: #f7fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; white-space: pre-wrap;" id="debugInfo">
+Click "Test Server Connection" to see debug info...
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = 'http://localhost:8000';
+        
+        // State
+        let currentSession = null;
+        let currentQuestionIndex = 0;
+        let totalQuestions = 5;
+        let questionScores = [];
+
+        // Initialize
+        window.addEventListener('load', function() {
+            console.log('🚀 Excel Interview Frontend loaded');
+            testConnection();
+        });
+
+        async function testConnection() {
+            const resultsDiv = document.getElementById('connectionResults');
+            resultsDiv.innerHTML = '<div style="margin-top: 10px;">Testing connection...</div>';
+            
+            const tests = [
+                { name: 'Root Endpoint', url: `${API_BASE}/`, method: 'GET' },
+                { name: 'Health Check', url: `${API_BASE}/health`, method: 'GET' },
+                { name: 'Debug Info', url: `${API_BASE}/debug`, method: 'GET' }
+            ];
+            
+            let allResults = [];
+            
+            for (const test of tests) {
+                try {
+                    console.log(`Testing ${test.name}...`);
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    
+                    const response = await fetch(test.url, {
+                        method: test.method,
+                        signal: controller.signal,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        allResults.push(`✅ ${test.name}: SUCCESS`);
+                        
+                        // Update status from health check
+                        if (test.name === 'Health Check') {
+                            updateSystemStatus(data);
+                        }
+                        
+                        // Store debug info
+                        if (test.name === 'Debug Info') {
+                            document.getElementById('debugInfo').textContent = JSON.stringify(data, null, 2);
+                        }
+                        
+                    } else {
+                        allResults.push(`❌ ${test.name}: HTTP ${response.status}`);
+                    }
+                    
+                } catch (error) {
+                    console.error(`${test.name} failed:`, error);
+                    
+                    if (error.name === 'AbortError') {
+                        allResults.push(`❌ ${test.name}: TIMEOUT`);
+                    } else if (error.message.includes('Failed to fetch')) {
+                        allResults.push(`❌ ${test.name}: SERVER NOT RUNNING`);
+                    } else {
+                        allResults.push(`❌ ${test.name}: ${error.message}`);
+                    }
+                }
+            }
+            
+            // Display results
+            resultsDiv.innerHTML = allResults.map(result => 
+                `<div class="test-result ${result.includes('✅') ? 'test-success' : 'test-error'}">${result}</div>`
+            ).join('');
+            
+            // Show specific error if server not running
+            if (allResults.some(r => r.includes('SERVER NOT RUNNING'))) {
+                showError('❌ Server not running on port 8000. Please start your Python server first:\n\npython main_debug.py');
+            }
+        }
+
+        function updateSystemStatus(healthData) {
+            const serverStatus = document.getElementById('serverStatus');
+            const voiceStatus = document.getElementById('voiceStatus');
+            const questionsStatus = document.getElementById('questionsStatus');
+            const sessionsStatus = document.getElementById('sessionsStatus');
+            
+            // Server status
+            if (healthData.status === 'healthy') {
+                serverStatus.textContent = 'HEALTHY';
+                serverStatus.className = 'status-value status-healthy';
+            } else {
+                serverStatus.textContent = 'ISSUES';
+                serverStatus.className = 'status-value status-warning';
+            }
+            
+            // Voice status
+            if (healthData.checks.voice_service) {
+                voiceStatus.textContent = 'AVAILABLE';
+                voiceStatus.className = 'status-value status-healthy';
+            } else {
+                voiceStatus.textContent = 'UNAVAILABLE';
+                voiceStatus.className = 'status-value status-warning';
+            }
+            
+            // Questions status
+            if (healthData.checks.questions_loaded) {
+                questionsStatus.textContent = '5 READY';
+                questionsStatus.className = 'status-value status-healthy';
+            } else {
+                questionsStatus.textContent = 'NOT LOADED';
+                questionsStatus.className = 'status-value status-error';
+            }
+            
+            // Sessions (placeholder for now)
+            sessionsStatus.textContent = 'READY';
+            sessionsStatus.className = 'status-value status-healthy';
+        }
+
+        async function startInterview() {
+            const candidateName = document.getElementById('candidateName').value.trim();
+            
+            if (!candidateName) {
+                showError('Please enter your name');
+                return;
+            }
+            
+            try {
+                setButtonLoading('startBtn', true);
+                hideError();
+                
+                console.log('Starting interview for:', candidateName);
+                
+                const response = await fetch(`${API_BASE}/api/interview/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        candidate_name: candidateName
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`Server error ${response.status}: ${errorData}`);
+                }
+                
+                const data = await response.json();
+                console.log('Interview started:', data);
+                
+                if (data.success) {
+                    currentSession = data.session_id;
+                    totalQuestions = data.total_questions;
+                    currentQuestionIndex = 0;
+                    questionScores = [];
+                    
+                    // Display first question
+                    displayQuestion(data.first_question, 1);
+                    updateProgress();
+                    
+                    // Switch views
+                    document.getElementById('startSection').classList.add('hidden');
+                    document.getElementById('interviewSection').classList.remove('hidden');
+                    
+                } else {
+                    throw new Error(data.message || 'Failed to start interview');
+                }
+                
+            } catch (error) {
+                console.error('Start interview error:', error);
+                showError(`Failed to start interview: ${error.message}`);
+            } finally {
+                setButtonLoading('startBtn', false);
+            }
+        }
+
+        async function submitResponse() {
+            const responseText = document.getElementById('responseText').value.trim();
+            
+            if (!responseText) {
+                showError('Please enter your answer before submitting');
+                return;
+            }
+            
+            if (!currentSession) {
+                showError('No active interview session');
+                return;
+            }
+            
+            try {
+                setButtonLoading('submitBtn', true);
+                hideError();
+                
+                console.log('Submitting response for session:', currentSession);
+                
+                const response = await fetch(`${API_BASE}/api/interview/${currentSession}/respond`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        response_text: responseText
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`Server error ${response.status}: ${errorData}`);
+                }
+                
+                const data = await response.json();
+                console.log('Response submitted:', data);
+                
+                if (data.success) {
+                    // Store score
+                    questionScores.push(data.evaluation.score);
+                    
+                    // Show feedback
+                    showFeedback(data.evaluation);
+                    
+                    if (data.interview_complete) {
+                        // Show final results
+                        setTimeout(() => showFinalResults(data.final_results), 2000);
+                    } else {
+                        // Move to next question
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            displayQuestion(data.next_question, currentQuestionIndex + 1);
+                            document.getElementById('responseText').value = '';
+                            updateProgress();
+                            hideFeedback();
+                        }, 3000);
+                    }
+                    
+                } else {
+                    throw new Error(data.message || 'Failed to submit response');
+                }
+                
+            } catch (error) {
+                console.error('Submit response error:', error);
+                showError(`Failed to submit response: ${error.message}`);
+            } finally {
+                setButtonLoading('submitBtn', false);
+            }
+        }
+
+        async function testVoice() {
+            try {
+                setButtonLoading('testVoiceBtn', true);
+                
+                const response = await fetch(`${API_BASE}/api/voice/test`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.test_successful) {
+                    alert('🎙️ Voice test successful!\n\n' + 
+                          `Service: ${data.result.voice_id}\n` +
+                          `Call #: ${data.result.call_number}\n` +
+                          `Message: ${data.result.message}`);
+                } else {
+                    alert('❌ Voice test failed:\n\n' + JSON.stringify(data, null, 2));
+                }
+                
+            } catch (error) {
+                showError(`Voice test failed: ${error.message}`);
+            } finally {
+                setButtonLoading('testVoiceBtn', false);
+            }
+        }
+
+        function displayQuestion(question, questionNum) {
+            document.getElementById('questionNumber').textContent = `Question ${questionNum}`;
+            document.getElementById('questionDifficulty').textContent = question.difficulty.toUpperCase();
+            document.getElementById('currentQuestion').textContent = question.text;
+            
+            // Set difficulty color
+            const difficultyEl = document.getElementById('questionDifficulty');
+            if (question.difficulty === 'easy') {
+                difficultyEl.style.background = '#48bb78';
+            } else if (question.difficulty === 'medium') {
+                difficultyEl.style.background = '#ed8936';
+            } else {
+                difficultyEl.style.background = '#e53e3e';
+            }
+        }
+
+        function updateProgress() {
+            const percentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `Question ${currentQuestionIndex + 1} of ${totalQuestions} • ${Math.round(percentage)}% Complete`;
+        }
+
+        function showFeedback(evaluation) {
+            document.getElementById('lastScore').textContent = `Score: ${evaluation.score}/5.0`;
+            document.getElementById('lastFeedback').textContent = evaluation.feedback;
+            document.getElementById('feedbackCard').classList.remove('hidden');
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedbackCard').classList.add('hidden');
+        }
+
+        function showFinalResults(results) {
+            document.getElementById('finalScore').textContent = `${results.average_score}/5.0`;
+            document.getElementById('sessionDuration').textContent = results.session_duration;
+            document.getElementById('completionRate').textContent = `${results.completion_rate}%`;
+            
+            // Show score breakdown
+            const breakdown = document.getElementById('scoreBreakdown');
+            breakdown.innerHTML = questionScores.map((score, index) => 
+                `<div class="score-item">
+                    <div style="font-weight: 600;">Q${index + 1}</div>
+                    <div style="color: #38a169; font-weight: 700;">${score}/5</div>
+                </div>`
+            ).join('');
+            
+            // Switch views
+            document.getElementById('interviewSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+        }
+
+        async function viewAllSessions() {
+            try {
+                const response = await fetch(`${API_BASE}/api/sessions`);
+                const data = await response.json();
+                
+                alert('📊 All Sessions:\n\n' + 
+                      `Total: ${data.total_sessions}\n\n` +
+                      data.sessions.map(s => 
+                          `• ${s.candidate_name} (${s.status})\n  Progress: ${s.progress}\n  Score: ${s.average_score}/5.0`
+                      ).join('\n\n'));
+                      
+            } catch (error) {
+                showError(`Failed to load sessions: ${error.message}`);
+            }
+        }
+
+        function resetInterview() {
+            currentSession = null;
+            currentQuestionIndex = 0;
+            questionScores = [];
+            
+            document.getElementById('responseText').value = '';
+            document.getElementById('candidateName').value = 'John Doe';
+            
+            // Reset views
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('interviewSection').classList.add('hidden');
+            document.getElementById('startSection').classList.remove('hidden');
+            
+            hideFeedback();
+            hideError();
+            
+            // Refresh status
+            testConnection();
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorDisplay');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            console.error('Error:', message);
+        }
+
+        function hideError() {
+            document.getElementById('errorDisplay').classList.add('hidden');
+        }
+
+        function setButtonLoading(buttonId, loading) {
+            const button = document.getElementById(buttonId);
+            const spinner = document.getElementById(buttonId.replace('Btn', 'Spinner'));
+            
+            if (button) {
+                button.disabled = loading;
+                if (loading) {
+                    button.classList.add('loading');
+                } else {
+                    button.classList.remove('loading');
+                }
+            }
+            
+            if (spinner) {
+                if (loading) {
+                    spinner.classList.remove('hidden');
+                } else {
+                    spinner.classList.add('hidden');
+                }
+            }
+        }
+
+        // Add some helpful console logs
+        console.log('📊 Excel Interview Frontend Ready');
+        console.log('🔗 API Base URL:', API_BASE);
+        console.log('🎯 Ready to connect to your Python server!');
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+# streamlit_requirements.txt - Streamlit Frontend Dependencies
+
+# Core Streamlit
+streamlit>=1.28.0
+
+# HTTP requests for API communication
+requests>=2.31.0
+httpx>=0.25.0
+
+# Audio recording and processing for Streamlit
+sounddevice>=0.4.6
+soundfile>=0.12.1
+numpy>=1.24.0
+
+# Audio playback (optional)
+pygame>=2.5.2
+
+# File handling
+pathlib2>=2.3.7
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Data processing
+pandas>=2.0.0
+
+# Date/time handling
+python-dateutil>=2.8.2
+
+# JSON handling (built-in, but ensuring compatibility)
+# json (built-in)
+
+# UUID generation (built-in)
+# uuid (built-in)
+
+# Temporary file handling (built-in)
+# tempfile (built-in)
+
+# Optional: For enhanced audio visualization
+# matplotlib>=3.7.0
+# plotly>=5.17.0
+
+# Optional: For audio format conversion
+# pydub>=0.25.1

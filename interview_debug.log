@@ -1,0 +1,55 @@
+2025-08-01 18:09:19,537 - __main__ - INFO - 🔍 Starting system diagnostics...
+2025-08-01 18:09:19,537 - __main__ - INFO - 📁 Directory exists: voice_cache
+2025-08-01 18:09:19,537 - __main__ - INFO - 📁 Directory exists: uploads
+2025-08-01 18:09:19,538 - __main__ - INFO - 📁 Directory exists: logs
+2025-08-01 18:09:19,538 - __main__ - INFO - 📦 Package available: fastapi
+2025-08-01 18:09:19,562 - __main__ - INFO - 📦 Package available: uvicorn
+2025-08-01 18:09:19,562 - __main__ - INFO - 📦 Package available: pydantic
+2025-08-01 18:09:19,619 - __main__ - INFO - 📦 Package available: aiohttp
+2025-08-01 18:09:19,622 - __main__ - INFO - 📦 Package available: aiofiles
+2025-08-01 18:09:19,622 - __main__ - INFO - 📊 Diagnostics complete: 9/11 checks passed
+2025-08-01 18:09:19,622 - __main__ - WARNING - ⚠️ Warnings:
+2025-08-01 18:09:19,622 - __main__ - WARNING -   - Environment variable not set: MURF_API_KEY
+2025-08-01 18:09:19,622 - __main__ - WARNING -   - Environment variable not set: ANTHROPIC_API_KEY
+2025-08-01 18:09:19,623 - __main__ - INFO - ✅ FastAPI app created
+2025-08-01 18:09:19,623 - __main__ - INFO - ✅ CORS middleware added
+2025-08-01 18:09:19,623 - __main__ - INFO - ✅ Static files mounted
+2025-08-01 18:09:19,623 - __main__ - INFO - 🎙️ Debug voice service initialized
+2025-08-01 18:09:19,623 - __main__ - INFO - ✅ Services initialized
+2025-08-01 18:11:20,773 - __main__ - INFO - 📝 Interview started: John Smith (session_59814c0ff1)
+2025-08-01 18:12:27,042 - __main__ - INFO - 🔊 Testing voice with: 'This is a test of the debug voice system. Can you ...'
+2025-08-01 18:12:27,043 - __main__ - INFO - 🔊 TTS Call #1: 68 chars, voice: en-US-cooper
+2025-08-01 18:12:27,094 - __main__ - INFO - ✅ TTS successful: audio_86509158
+2025-08-01 18:12:50,448 - __main__ - INFO - 📊 Response evaluated: 2.5/5.0 for John Smith
+2025-08-01 18:14:06,265 - __main__ - INFO - 📊 Response evaluated: 4.5/5.0 for John Smith
+2025-08-01 18:14:27,621 - __main__ - INFO - 📊 Response evaluated: 4.5/5.0 for John Smith
+2025-08-01 18:15:01,354 - __main__ - INFO - 📊 Response evaluated: 4.5/5.0 for John Smith
+2025-08-01 18:17:44,021 - __main__ - INFO - 📊 Response evaluated: 4.5/5.0 for John Smith
+2025-08-01 18:20:54,583 - __main__ - INFO - 🔊 Testing voice with: 'This is a test of the debug voice system. Can you ...'
+2025-08-01 18:20:54,583 - __main__ - INFO - 🔊 TTS Call #2: 68 chars, voice: en-US-cooper
+2025-08-01 18:20:54,635 - __main__ - INFO - ✅ TTS successful: audio_d38f9d1c
+2025-08-01 18:20:57,266 - __main__ - INFO - 🔊 Testing voice with: 'This is a test of the debug voice system. Can you ...'
+2025-08-01 18:20:57,267 - __main__ - INFO - 🔊 TTS Call #3: 68 chars, voice: en-US-cooper
+2025-08-01 18:20:57,318 - __main__ - INFO - ✅ TTS successful: audio_db134bfe
+2025-08-01 18:21:00,704 - __main__ - INFO - 📝 Interview started: John Doe (session_da4db4927e)
+2025-08-01 18:21:06,200 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for John Doe
+2025-08-01 18:21:09,066 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for John Doe
+2025-08-01 18:21:18,001 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for John Doe
+2025-08-01 18:21:19,798 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for John Doe
+2025-08-01 18:21:24,434 - __main__ - INFO - 📊 Response evaluated: 1.0/5.0 for John Doe
+2025-08-01 18:21:29,582 - __main__ - INFO - 🔊 Testing voice with: 'This is a test of the debug voice system. Can you ...'
+2025-08-01 18:21:29,582 - __main__ - INFO - 🔊 TTS Call #4: 68 chars, voice: en-US-cooper
+2025-08-01 18:21:29,633 - __main__ - INFO - ✅ TTS successful: audio_237ee1ff
+2025-08-01 18:24:56,674 - __main__ - INFO - 📝 Interview started: Voice Test User (session_eccf5a20e2)
+2025-08-01 18:25:54,529 - __main__ - INFO - 🔊 Testing voice with: 'This is a test of the debug voice system. Can you ...'
+2025-08-01 18:25:54,530 - __main__ - INFO - 🔊 TTS Call #5: 68 chars, voice: en-US-cooper
+2025-08-01 18:25:54,580 - __main__ - INFO - ✅ TTS successful: audio_9fd22832
+2025-08-01 18:26:06,691 - __main__ - INFO - 📝 Interview started: Voice Test User (session_4302f01b5e)
+2025-08-01 18:26:45,889 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for Voice Test User
+2025-08-01 18:27:16,805 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for Voice Test User
+2025-08-01 18:27:52,502 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for Voice Test User
+2025-08-01 18:28:58,255 - __main__ - INFO - 📝 Interview started: Voice Interview User (session_f178ee4327)
+2025-08-01 18:29:41,511 - __main__ - INFO - 📝 Interview started: Voice Interview User (session_09959fafc3)
+2025-08-01 18:30:07,820 - __main__ - INFO - 📝 Interview started: Voice Interview User (session_ade4441956)
+2025-08-01 18:30:10,684 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for Voice Interview User
+2025-08-01 18:30:18,381 - __main__ - INFO - 📊 Response evaluated: 1.5/5.0 for Voice Interview User

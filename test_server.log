@@ -1,0 +1,19 @@
+INFO:     Started server process [81274]
+INFO:     Waiting for application startup.
+INFO:     ASGI 'lifespan' protocol appears unsupported.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/shashwatsingh/Library/Python/3.9/lib/python/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/Users/shashwatsingh/Library/Python/3.9/lib/python/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+  File "/Users/shashwatsingh/Library/Python/3.9/lib/python/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/shashwatsingh/Library/Python/3.9/lib/python/site-packages/starlette/applications.py", line 112, in __call__
+    self.middleware_stack = self.build_middleware_stack()
+  File "/Users/shashwatsingh/Library/Python/3.9/lib/python/site-packages/fastapi/applications.py", line 1014, in build_middleware_stack
+    for cls, options in reversed(middleware):
+ValueError: too many values to unpack (expected 2)
+INFO:     127.0.0.1:50491 - "GET /health HTTP/1.1" 500 Internal Server Error

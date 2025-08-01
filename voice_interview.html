@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Excel Interview System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 2.8rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .voice-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .voice-controls {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+        
+        .voice-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 200px;
+        }
+        
+        .voice-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .voice-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .voice-button.recording {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .voice-button.speaking {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .microphone-icon {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .voice-status {
+            margin: 15px 0;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .status-listening {
+            background: #fed7d7;
+            color: #c53030;
+            border: 2px solid #fc8181;
+        }
+        
+        .status-speaking {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #68d391;
+        }
+        
+        .status-ready {
+            background: #e6fffa;
+            color: #234e52;
+            border: 2px solid #81e6d9;
+        }
+        
+        .question-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            border-left: 5px solid #667eea;
+            position: relative;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 700;
+        }
+        
+        .question-difficulty {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            color: #2d3748;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+        
+        .response-area {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .response-text {
+            width: 100%;
+            min-height: 120px;
+            border: none;
+            font-size: 16px;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .response-text:focus {
+            outline: none;
+        }
+        
+        .progress-container {
+            margin: 25px 0;
+        }
+        
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 12px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 12px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .feedback-card {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border: 2px solid #4fd1c7;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .feedback-score {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #38a169;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-text {
+            font-size: 1.2rem;
+            color: #2d3748;
+        }
+        
+        .results-card {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border: 3px solid #68d391;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .final-score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #38a169;
+            margin-bottom: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .error {
+            background: #fed7d7;
+            border: 2px solid #fc8181;
+            border-radius: 12px;
+            padding: 20px;
+            color: #c53030;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        
+        .audio-visualization {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            margin: 20px 0;
+        }
+        
+        .audio-bar {
+            width: 4px;
+            margin: 0 2px;
+            background: #667eea;
+            border-radius: 2px;
+            animation: audioWave 1.5s ease-in-out infinite;
+        }
+        
+        .audio-bar:nth-child(2) { animation-delay: 0.1s; }
+        .audio-bar:nth-child(3) { animation-delay: 0.2s; }
+        .audio-bar:nth-child(4) { animation-delay: 0.3s; }
+        .audio-bar:nth-child(5) { animation-delay: 0.4s; }
+        
+        @keyframes audioWave {
+            0%, 100% { height: 10px; }
+            50% { height: 40px; }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎙️ Voice Excel Interview</h1>
+            <p class="subtitle">AI-Powered Voice Assessment System</p>
+            <div class="voice-indicator">
+                <span>🎯 Voice-Enabled Interview Platform</span>
+            </div>
+        </div>
+
+        <!-- Voice Controls -->
+        <div class="voice-controls">
+            <h3 style="margin-bottom: 20px; color: #2d3748;">🎙️ Voice Interview Controls</h3>
+            
+            <button class="voice-button" id="voiceBtn" onclick="toggleVoiceMode()">
+                <span class="microphone-icon">🎤</span>
+                <span id="voiceBtnText">Start Voice Interview</span>
+            </button>
+            
+            <button class="voice-button" style="background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);" onclick="testVoiceSystem()">
+                <span class="microphone-icon">🔊</span>
+                Test Voice System
+            </button>
+            
+            <div class="voice-status hidden" id="voiceStatus">
+                🎙️ Ready to listen...
+            </div>
+            
+            <!-- Audio Visualization -->
+            <div class="audio-visualization hidden" id="audioViz">
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+            </div>
+        </div>
+
+        <!-- Start Interview Section -->
+        <div id="startSection" class="section">
+            <div class="form-group">
+                <label for="candidateName">👤 Candidate Name:</label>
+                <input type="text" id="candidateName" placeholder="Enter your full name" value="Voice Test User">
+            </div>
+            
+            <button class="voice-button" onclick="startVoiceInterview()" id="startBtn">
+                🚀 Begin Voice Interview
+            </button>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #4a5568; font-size: 1.1rem;">
+                    🎯 <strong>Voice Interview Mode:</strong><br>
+                    • Questions will be spoken aloud<br>
+                    • You can respond by voice or typing<br>
+                    • Real-time speech recognition<br>
+                    • Interactive voice feedback
+                </p>
+            </div>
+        </div>
+
+        <!-- Interview Section -->
+        <div id="interviewSection" class="section hidden">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number" id="questionNumber">Question 1</span>
+                    <span class="question-difficulty" id="questionDifficulty">Medium</span>
+                </div>
+                <div class="question-text" id="currentQuestion">Loading question...</div>
+                
+                <!-- Voice Question Controls -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="voice-button" onclick="speakQuestion()" id="speakBtn">
+                        🔊 Hear Question
+                    </button>
+                    <button class="voice-button" onclick="startListening()" id="listenBtn">
+                        🎤 Voice Answer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Response Area -->
+            <div class="response-area">
+                <label for="responseText" style="margin-bottom: 10px; display: block; font-weight: 600;">
+                    💬 Your Answer: <span style="font-weight: normal; color: #718096;">(Type or use voice)</span>
+                </label>
+                <textarea id="responseText" class="response-text" 
+                    placeholder="Type your answer here, or click 'Voice Answer' to speak your response..."></textarea>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="voice-button" onclick="submitResponse()" id="submitBtn">
+                    📝 Submit Answer
+                </button>
+            </div>
+
+            <!-- Feedback Display -->
+            <div id="feedbackCard" class="feedback-card hidden">
+                <div class="feedback-score" id="lastScore"></div>
+                <div class="feedback-text" id="lastFeedback"></div>
+                <button class="voice-button" onclick="speakFeedback()" style="margin-top: 15px;">
+                    🔊 Hear Feedback
+                </button>
+            </div>
+        </div>
+
+        <!-- Final Results Section -->
+        <div id="resultsSection" class="section hidden">
+            <div class="results-card">
+                <h2 style="color: #2d3748; margin-bottom: 25px;">🎉 Voice Interview Complete!</h2>
+                <div class="final-score" id="finalScore">4.1/5.0</div>
+                
+                <div style="margin: 25px 0; color: #4a5568; font-size: 1.2rem;">
+                    <div><strong>🕒 Duration:</strong> <span id="sessionDuration">6:23</span></div>
+                    <div><strong>✅ Completion:</strong> <span id="completionRate">100%</span></div>
+                    <div><strong>🎙️ Voice Interactions:</strong> <span id="voiceInteractions">12</span></div>
+                </div>
+                
+                <button class="voice-button" onclick="speakResults()">
+                    🔊 Hear Results
+                </button>
+                <button class="voice-button" onclick="resetInterview()">
+                    🔄 New Interview
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div id="errorDisplay" class="error hidden"></div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = 'http://localhost:8000';
+        
+        // State
+        let currentSession = null;
+        let currentQuestionIndex = 0;
+        let totalQuestions = 5;
+        let questionScores = [];
+        let voiceInteractions = 0;
+        let currentQuestionText = '';
+        let lastFeedbackText = '';
+        
+        // Voice API state
+        let speechRecognition = null;
+        let speechSynthesis = null;
+        let isListening = false;
+        let isSpeaking = false;
+
+        // Initialize voice capabilities
+        function initializeVoice() {
+            // Check for Speech Recognition
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                speechRecognition = new SpeechRecognition();
+                
+                speechRecognition.continuous = false;
+                speechRecognition.interimResults = false;
+                speechRecognition.lang = 'en-US';
+                
+                speechRecognition.onstart = function() {
+                    console.log('🎤 Speech recognition started');
+                    isListening = true;
+                    updateVoiceStatus('🎤 Listening... Speak your answer clearly');
+                    document.getElementById('listenBtn').classList.add('recording');
+                    document.getElementById('audioViz').classList.remove('hidden');
+                };
+                
+                speechRecognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log('🎯 Speech recognized:', transcript);
+                    
+                    // Add to text area
+                    const responseText = document.getElementById('responseText');
+                    responseText.value = transcript;
+                    
+                    // Show success
+                    updateVoiceStatus('✅ Speech captured successfully!');
+                    voiceInteractions++;
+                };
+                
+                speechRecognition.onerror = function(event) {
+                    console.error('🚨 Speech recognition error:', event.error);
+                    updateVoiceStatus('❌ Speech recognition failed. Please try again or type your answer.');
+                };
+                
+                speechRecognition.onend = function() {
+                    console.log('🛑 Speech recognition ended');
+                    isListening = false;
+                    document.getElementById('listenBtn').classList.remove('recording');
+                    document.getElementById('audioViz').classList.add('hidden');
+                    
+                    setTimeout(() => {
+                        updateVoiceStatus('🎙️ Ready for next interaction');
+                    }, 2000);
+                };
+                
+                console.log('✅ Speech Recognition initialized');
+            } else {
+                console.warn('⚠️ Speech Recognition not supported');
+            }
+            
+            // Check for Speech Synthesis
+            if ('speechSynthesis' in window) {
+                speechSynthesis = window.speechSynthesis;
+                console.log('✅ Speech Synthesis initialized');
+            } else {
+                console.warn('⚠️ Speech Synthesis not supported');
+            }
+        }
+
+        function updateVoiceStatus(message, type = 'ready') {
+            const statusEl = document.getElementById('voiceStatus');
+            statusEl.textContent = message;
+            statusEl.className = `voice-status status-${type}`;
+            statusEl.classList.remove('hidden');
+        }
+
+        function speakText(text, callback = null) {
+            if (!speechSynthesis) {
+                console.warn('⚠️ Speech synthesis not available');
+                if (callback) callback();
+                return;
+            }
+            
+            // Stop any current speech
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            utterance.onstart = function() {
+                isSpeaking = true;
+                updateVoiceStatus('🔊 Speaking...', 'speaking');
+                voiceInteractions++;
+            };
+            
+            utterance.onend = function() {
+                isSpeaking = false;
+                updateVoiceStatus('🎙️ Ready for your response', 'ready');
+                if (callback) callback();
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('🚨 Speech synthesis error:', event.error);
+                isSpeaking = false;
+                updateVoiceStatus('❌ Speech failed', 'ready');
+                if (callback) callback();
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        async function startVoiceInterview() {
+            const candidateName = document.getElementById('candidateName').value.trim();
+            
+            if (!candidateName) {
+                showError('Please enter your name');
+                return;
+            }
+            
+            try {
+                updateVoiceStatus('🚀 Starting voice interview...', 'speaking');
+                
+                // Start interview via API
+                const response = await fetch(`${API_BASE}/api/interview/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ candidate_name: candidateName })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server error ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentSession = data.session_id;
+                    totalQuestions = data.total_questions;
+                    currentQuestionIndex = 0;
+                    questionScores = [];
+                    voiceInteractions = 0;
+                    
+                    // Display first question
+                    displayQuestion(data.first_question, 1);
+                    updateProgress();
+                    
+                    // Switch to interview view
+                    document.getElementById('startSection').classList.add('hidden');
+                    document.getElementById('interviewSection').classList.remove('hidden');
+                    
+                    // Speak welcome message and first question
+                    const welcomeText = `Hello ${candidateName}! Welcome to your Excel voice interview. I will now read the first question.`;
+                    speakText(welcomeText, () => {
+                        setTimeout(() => speakQuestion(), 1000);
+                    });
+                    
+                    hideError();
+                } else {
+                    throw new Error('Failed to start interview');
+                }
+                
+            } catch (error) {
+                showError(`Failed to start voice interview: ${error.message}`);
+                updateVoiceStatus('❌ Interview start failed', 'ready');
+            }
+        }
+
+        function speakQuestion() {
+            if (!currentQuestionText) {
+                console.warn('⚠️ No question text to speak');
+                return;
+            }
+            
+            const questionText = `Question ${currentQuestionIndex + 1}: ${currentQuestionText}`;
+            speakText(questionText);
+        }
+
+        function startListening() {
+            if (!speechRecognition) {
+                showError('Speech recognition not supported in this browser. Please use Chrome or Edge.');
+                return;
+            }
+            
+            if (isListening) {
+                speechRecognition.stop();
+                return;
+            }
+            
+            try {
+                speechRecognition.start();
+            } catch (error) {
+                console.error('🚨 Failed to start listening:', error);
+                showError('Failed to start voice recognition. Please try again.');
+            }
+        }
+
+        async function submitResponse() {
+            const responseText = document.getElementById('responseText').value.trim();
+            
+            if (!responseText) {
+                showError('Please provide an answer (voice or text)');
+                return;
+            }
+            
+            if (!currentSession) {
+                showError('No active interview session');
+                return;
+            }
+            
+            try {
+                updateVoiceStatus('📝 Evaluating your response...', 'speaking');
+                
+                const response = await fetch(`${API_BASE}/api/interview/${currentSession}/respond`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ response_text: responseText })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server error ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    questionScores.push(data.evaluation.score);
+                    
+                    // Show feedback
+                    showFeedback(data.evaluation);
+                    
+                    // Speak the feedback
+                    const feedbackText = `Your score is ${data.evaluation.score} out of 5. ${data.evaluation.feedback}`;
+                    lastFeedbackText = feedbackText;
+                    speakText(feedbackText);
+                    
+                    if (data.interview_complete) {
+                        // Complete interview
+                        setTimeout(() => showFinalResults(data.final_results), 4000);
+                    } else {
+                        // Move to next question
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            displayQuestion(data.next_question, currentQuestionIndex + 1);
+                            document.getElementById('responseText').value = '';
+                            updateProgress();
+                            hideFeedback();
+                            
+                            // Speak next question
+                            setTimeout(() => speakQuestion(), 1000);
+                        }, 5000);
+                    }
+                    
+                    hideError();
+                } else {
+                    throw new Error('Failed to submit response');
+                }
+                
+            } catch (error) {
+                showError(`Failed to submit response: ${error.message}`);
+                updateVoiceStatus('❌ Submission failed', 'ready');
+            }
+        }
+
+        async function testVoiceSystem() {
+            try {
+                updateVoiceStatus('🧪 Testing voice system...', 'speaking');
+                
+                // Test speech synthesis
+                speakText('Hello! This is a test of the voice system. Speech synthesis is working correctly.', () => {
+                    updateVoiceStatus('✅ Voice test completed! System ready.', 'ready');
+                });
+                
+                // Test API voice endpoint
+                const response = await fetch(`${API_BASE}/api/voice/test`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await response.json();
+                console.log('🎙️ API Voice test:', data);
+                
+            } catch (error) {
+                showError(`Voice test failed: ${error.message}`);
+                updateVoiceStatus('❌ Voice test failed', 'ready');
+            }
+        }
+
+        function speakFeedback() {
+            if (lastFeedbackText) {
+                speakText(lastFeedbackText);
+            }
+        }
+
+        function speakResults() {
+            const score = document.getElementById('finalScore').textContent;
+            const duration = document.getElementById('sessionDuration').textContent;
+            
+            const resultsText = `Congratulations! You have completed the Excel voice interview. Your final score is ${score}. The interview took ${duration}. Great job!`;
+            speakText(resultsText);
+        }
+
+        function displayQuestion(question, questionNum) {
+            currentQuestionText = question.text;
+            
+            document.getElementById('questionNumber').textContent = `Question ${questionNum}`;
+            document.getElementById('questionDifficulty').textContent = question.difficulty.toUpperCase();
+            document.getElementById('currentQuestion').textContent = question.text;
+            
+            // Set difficulty color
+            const difficultyEl = document.getElementById('questionDifficulty');
+            if (question.difficulty === 'easy') {
+                difficultyEl.style.background = '#48bb78';
+            } else if (question.difficulty === 'medium') {
+                difficultyEl.style.background = '#ed8936';
+            } else {
+                difficultyEl.style.background = '#e53e3e';
+            }
+        }
+
+        function updateProgress() {
+            const percentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `Question ${currentQuestionIndex + 1} of ${totalQuestions} • ${Math.round(percentage)}% Complete`;
+        }
+
+        function showFeedback(evaluation) {
+            document.getElementById('lastScore').textContent = `Score: ${evaluation.score}/5.0`;
+            document.getElementById('lastFeedback').textContent = evaluation.feedback;
+            document.getElementById('feedbackCard').classList.remove('hidden');
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedbackCard').classList.add('hidden');
+        }
+
+        function showFinalResults(results) {
+            document.getElementById('finalScore').textContent = `${results.average_score}/5.0`;
+            document.getElementById('sessionDuration').textContent = results.session_duration;
+            document.getElementById('completionRate').textContent = `${results.completion_rate}%`;
+            document.getElementById('voiceInteractions').textContent = voiceInteractions;
+            
+            // Switch views
+            document.getElementById('interviewSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            
+            // Speak completion message
+            setTimeout(() => speakResults(), 1000);
+        }
+
+        function resetInterview() {
+            currentSession = null;
+            currentQuestionIndex = 0;
+            questionScores = [];
+            voiceInteractions = 0;
+            currentQuestionText = '';
+            lastFeedbackText = '';
+            
+            document.getElementById('responseText').value = '';
+            document.getElementById('candidateName').value = 'Voice Test User';
+            
+            // Reset views
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('interviewSection').classList.add('hidden');
+            document.getElementById('startSection').classList.remove('hidden');
+            
+            hideFeedback();
+            hideError();
+            updateVoiceStatus('🎙️ Ready for new interview', 'ready');
+        }
+
+        function showError(message) {
+            document.getElementById('errorDisplay').textContent = message;
+            document.getElementById('errorDisplay').classList.remove('hidden');
+            console.error('Error:', message);
+        }
+
+        function hideError() {
+            document.getElementById('errorDisplay').classList.add('hidden');
+        }
+
+        // Initialize on load
+        window.addEventListener('load', function() {
+            console.log('🎙️ Voice Excel Interview System loaded');
+            initializeVoice();
+            updateVoiceStatus('🎙️ Voice system ready!', 'ready');
+        });
+    </script>
+</body>
+</html>
