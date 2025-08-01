@@ -15,7 +15,7 @@ async def discover_and_test_voices():
     print("=" * 50)
     
     # Get API key
-    api_key = os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61')
+    api_key = os.getenv('MURF_API_KEY', 'your_murf_key_here')
     print(f"🔑 Using API key: {api_key[:15]}...")
     
     # Create client
@@ -154,7 +154,7 @@ async def main():
             
             # Test one more time to confirm
             print(f"\n🧪 Final confirmation test...")
-            api_key = os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61')
+            api_key = os.getenv('MURF_API_KEY', 'your_murf_key_here')
             client = FixedMurfAPIClient(api_key)
             client.default_voice_id = working_voice_id  # Use discovered voice
             

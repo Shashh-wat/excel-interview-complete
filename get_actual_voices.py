@@ -15,7 +15,7 @@ async def get_real_murf_voices():
     print("🎙️ GETTING YOUR ACTUAL MURF VOICES")
     print("=" * 60)
     
-    api_key = os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61')
+    api_key = os.getenv('MURF_API_KEY', 'your_murf_key_here')
     print(f"🔑 API Key: {api_key[:15]}...")
     
     try:
@@ -231,7 +231,7 @@ async def main():
             # Test the working voice one more time
             print(f"\n🧪 Final test with {working_voice}...")
             final_test = await test_voice_directly(
-                os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61'),
+                os.getenv('MURF_API_KEY', 'your_murf_key_here'),
                 working_voice
             )
             

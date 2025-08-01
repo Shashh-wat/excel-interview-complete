@@ -410,7 +410,7 @@ async def test_fixed_voice_system():
     print("=" * 50)
     
     # Get API key from environment
-    api_key = os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61')
+    api_key = os.getenv('MURF_API_KEY', 'your_murf_key_here')
     
     print(f"🔑 API Key: {api_key[:15]}..." if api_key else "❌ No API key")
     

@@ -33,7 +33,7 @@ class VoiceSystemDiagnostic:
         api_key = (
             os.getenv('MURF_API_KEY') or
             os.getenv('murf_api_key') or
-            'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61'  # Default from your code
+            'your_murf_key_here'  # Default from your code
         )
         
         return api_key

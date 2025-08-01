@@ -16,7 +16,7 @@ async def test_voice_fix():
         from voice_fix_integration import initialize_working_voice_system
         
         # Get API key
-        api_key = os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61')
+        api_key = os.getenv('MURF_API_KEY', 'your_murf_key_here')
         
         print(f"🔑 Using API key: {api_key[:15]}..." if api_key else "❌ No API key")
         

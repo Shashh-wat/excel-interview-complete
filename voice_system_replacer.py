@@ -130,7 +130,7 @@ async def test_voice():
     print("=" * 40)
     
     # Create voice system
-    api_key = "ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61"
+    api_key = "your_murf_key_here"
     voice_components = create_working_voice_system(api_key)
     voice_service = voice_components["voice_service"]
     

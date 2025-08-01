@@ -93,7 +93,7 @@ async def main():
     print("=" * 50)
     
     # Get API key
-    api_key = os.getenv('MURF_API_KEY', 'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61')
+    api_key = os.getenv('MURF_API_KEY', 'your_murf_key_here')
     print(f"🔑 API Key: {api_key[:15]}...")
     
     tester = QuickVoiceTester(api_key)

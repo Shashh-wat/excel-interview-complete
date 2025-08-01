@@ -13,7 +13,7 @@ async def test_murf_api_direct():
     print("🧪 TESTING MURF API WITH FIXED HEADERS")
     print("=" * 50)
     
-    api_key = "ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61"
+    api_key = "your_murf_key_here"
     
     payload = {
         "voiceId": "en-US-sarah",
@@ -103,7 +103,7 @@ async def test_with_fixed_client():
     try:
         from fixed_murf_client import FixedMurfAPIClient, FixedVoiceService
         
-        api_key = "ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61"
+        api_key = "your_murf_key_here"
         
         # Create fixed client
         murf_client = FixedMurfAPIClient(api_key)
