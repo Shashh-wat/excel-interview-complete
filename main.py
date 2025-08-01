@@ -727,14 +727,12 @@ class Settings:
         # API Keys
         self.anthropic_api_key = (
             os.getenv('ANTHROPIC_API_KEY') or 
-            os.getenv('anthropic_api_key') or 
-            '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'
-        )
+            os.getenv('anthropic_api_key') )
         
         self.murf_api_key = (
             os.getenv('MURF_API_KEY') or
             os.getenv('murf_api_key') or
-            'ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61'
+       
         )
         
         self.default_voice_id = os.getenv('DEFAULT_VOICE_ID', 'en-US-sarah')

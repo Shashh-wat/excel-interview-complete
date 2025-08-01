@@ -15,10 +15,10 @@ def create_env_file():
 # Replace with your actual API keys
 
 # Murf API Key (get from https://murf.ai dashboard)
-MURF_API_KEY=ap2_efed6cf1-51d4-4390-989b-f2c4d112dc61
+MURF_API_KEY=your_murf_key_here
 
 # Anthropic API Key (get from https://console.anthropic.com)
-ANTHROPIC_API_KEY=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
+ANTHROPIC_API_KEY=your_anthropic_key_here
 
 # Server Configuration
 DEBUG=true
